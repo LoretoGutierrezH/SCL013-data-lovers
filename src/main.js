@@ -1,12 +1,7 @@
-//FOR DOM MANIPULATION
 import charactersData from "./data/potter/potter.js";
 import { filterByHouse, filterByWand, filterByCore, filterByPatronus, showPatronusNameOnly, sortByName, whoHasWandInfo} from "./data.js";
-/* import { wandCore } from "./data.js";
-import { wandWood } from "./data.js";   */
 
-///////////////////////////////////////////////////////////////////////////////////////
 /////////////////* HELPERS (FUNC. PARA COSAS PEQUEÑAS REPETITIVAS) *//////////////////
-//////////////////////////////////////////////////////////////////////////////////////
 
 //1.a. Borrar contenido de div#root (página de inicio)
 function clearContent() {
@@ -57,10 +52,7 @@ function createBasicStructure() {
   };
 }
 
-
-///////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////* PANTALLA DE INICIO *///////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////
 const root = document.getElementById("root");
 root.innerHTML = `
   <div class="img-box">
@@ -77,10 +69,7 @@ alohomoraBtn.addEventListener("click", () => {
   return houses();
 });
 
-
-///////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////* MENÚ  *////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////
 function mainMenu() {
   document.getElementById("navbar").innerHTML = `   
   <input type="checkbox" class="checkbox__hack" id="checkbox__hack">
@@ -190,10 +179,8 @@ function mainMenu() {
     comunicadosHarry();
   });
 }
-
-///////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////* MSJE. BIENVENIDA SEGÚN PANTALLA *////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////
+
 const welcomeMessages = [
   "El Colegio Hogwarts de Magia y Hechiceria utiliza el sistema de Casas. Los estudiantes de Hogwarts se divide en cuatro Casas, las cuales son: Gryffindor, Hufflepuff, Ravenclaw y Slytherin. El que elige a que casa van a ir cada estudiante es el Sombrero Seleccionador.",
 
@@ -217,22 +204,9 @@ const welcomeMessages = [
 
 ];
 
-const hogwartsWelcome = welcomeMessages[0]
-const gryffindorWelcome = welcomeMessages[1];
-const hufflepuffWelcome = welcomeMessages[2];
-const slytherinWelcome = welcomeMessages[3];
-const ravenclawWelcome = welcomeMessages[4];
-const woodsWelcome = welcomeMessages[5];
-const coresWelcome = welcomeMessages[6];
-const patronusWelcome = welcomeMessages[7];
-const newsWelcome = welcomeMessages[8];
-const extraNewsWelcome = welcomeMessages[9];
+const [hogwartsWelcome, gryffindorWelcome, hufflepuffWelcome, slytherinWelcome, ravenclawWelcome, woodsWelcome, coresWelcome, patronusWelcome, newsWelcome, extraNewsWelcome] = welcomeMessages;
 
-
-
-///////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////* PANTALLAS */////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////
 
 //0. PANTALLA DE ESCUDOS
 function houses() {
@@ -253,38 +227,38 @@ function houses() {
   innerContentSection.innerHTML += `
 
   <div class="grilla">
-    <img src = "./Imagenes/House Gry.jpg" class="grid-item" id="EscudoGry">
-    <img src = "./Imagenes/House Raven.jpg" class="grid-item" id="EscudoRaven">
-    <img src = "./Imagenes/House Huff.jpg" class="grid-item" id="EscudoHuffle">
-    <img src = "./Imagenes/House Sly.jpg" class="grid-item"id="EscudoSly">
+    <img src = "./Imagenes/House Gry.jpg" class="grid-item" id="gryffindorShield">
+    <img src = "./Imagenes/House Raven.jpg" class="grid-item" id="ravenclawShield">
+    <img src = "./Imagenes/House Huff.jpg" class="grid-item" id="hufflepuffShield">
+    <img src = "./Imagenes/House Sly.jpg" class="grid-item"id="slytherinShield">
   </div>
 `;
-  const EscudoGry = document.getElementById("EscudoGry");
-  EscudoGry.addEventListener("click", (event) => {
+  const gryffindorShield = document.getElementById("gryffindorShield");
+  gryffindorShield.addEventListener("click", (event) => {
     let gryffindorMembers = filterByHouse(charactersData, "Gryffindor");
     event.preventDefault();
     window.scrollTo(0, 0);
     return showHouseMembers(gryffindorMembers);
   });
 
-  const EscudoRaven = document.getElementById("EscudoRaven");
-  EscudoRaven.addEventListener("click", (event) => {
+  const ravenclawShield = document.getElementById("ravenclawShield");
+  ravenclawShield.addEventListener("click", (event) => {
     event.preventDefault();
     let ravenclawMembers = filterByHouse(charactersData, "Ravenclaw");
     window.scrollTo(0, 0);
     return showHouseMembers(ravenclawMembers);
   });
 
-  const EscudoHuffle = document.getElementById("EscudoHuffle");
-  EscudoHuffle.addEventListener("click", (event) => {
+  const hufflepuffShield = document.getElementById("hufflepuffShield");
+  hufflepuffShield.addEventListener("click", (event) => {
     event.preventDefault();
     let hufflepuffMembers = filterByHouse(charactersData, "Hufflepuff");
     window.scrollTo(0, 0);
     return showHouseMembers(hufflepuffMembers);
   });
 
-  const EscudoSly = document.getElementById("EscudoSly");
-  EscudoSly.addEventListener("click", (event) => {
+  const slytherinShield = document.getElementById("slytherinShield");
+  slytherinShield.addEventListener("click", (event) => {
     event.preventDefault();
     let slytherinMembers = filterByHouse(charactersData, "Slytherin");
     window.scrollTo(0, 0);
@@ -369,11 +343,8 @@ function showWood() {
   innerContentSection.appendChild(welcomeParagraph);
 
   const wandData = filterByWand(charactersData);
-  wandData.forEach((character) => {
-    const wandOwner = character[0];
-    const wandName = character[1];
-    const wandDescription = character[2];
-    const wandImg = character[3];
+  wandData.forEach(wand => {
+    const [wandOwner, wandName, wandDescription, wandImg] = wand;
     innerContentSection.innerHTML += `
     <div class="card-box">
       <div class="card">
@@ -412,11 +383,8 @@ function showCore() {
   innerContentSection.appendChild(welcomeParagraph);
 
   const coreData = filterByCore(charactersData);
-  coreData.forEach((character) => {
-    const coreOwner = character[0];
-    const coreName = character[1];
-    const coreDescription = character[2];
-    const coreImg = character[3];
+  coreData.forEach(core => {
+    const [coreOwner, coreName, coreDescription, coreImg] = core;
     innerContentSection.innerHTML += `
     <div class="card-box">
       <div class="card">
@@ -456,11 +424,8 @@ function showPatronus() {
   innerContentSection.appendChild(welcomeParagraph);
 
   const patronusData = filterByPatronus(charactersData);
-  patronusData.forEach((character) => {
-    const patronusOwner = character[0];
-    const patronusName = character[1];
-    const patronusDescription = character[2];
-    const patronusImg = character[3];
+  patronusData.forEach(patronus => {
+    const [patronusOwner, patronusName, patronusDescription, patronusImg] = patronus;
     innerContentSection.innerHTML += `
     <div class="card-box">
       <div class="card">

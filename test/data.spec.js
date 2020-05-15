@@ -1,10 +1,10 @@
 import { filterByHouse, filterByPatronus, filterByWand, filterByCore, sortByName } from "../src/data.js";
 
-describe("Filter by house function", () => {
-  test("Should return 'function'", () => {
-    expect(typeof filterByHouse).toBe("function");
+  describe("Filter by house function", () => {
+    test("Should return 'function'", () => {
+      expect(typeof filterByHouse).toBe("function");
+    });
   });
-});
 
 
 describe("Filter by house function", () => {

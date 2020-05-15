@@ -3,14 +3,14 @@
 //Filtrar por casa (membersByHouse: arreglo de personajes de una casa en particular)
 export function filterByHouse(dataToFilter, condition) {
   let membersByHouse = dataToFilter.filter(
-    (character) => character.house === condition
+    character => character.house === condition
   );
   return membersByHouse;
 }
 
 //Filtrar según la madera de la varita (wand es el objeto)
 export function filterByWand(dataToFilter) {
-  const hasWand = dataToFilter.filter((character) => character.wand);
+  const hasWand = dataToFilter.filter(character => character.wand);
   const wandAndInfo = hasWand.map((character) => {
     const wood = Object.entries(character.wand)[0][1];
     const owner = character.name;
@@ -31,7 +31,7 @@ export function filterByWand(dataToFilter) {
 }
 
 export function filterByCore(dataToFilter) {
-  const hasCore = dataToFilter.filter((character) => character.core);
+  const hasCore = dataToFilter.filter(character => character.core);
   const coreAndInfo = hasCore.map((character) => {
     const core = Object.entries(character.core)[0][1];
     const owner = character.name;
