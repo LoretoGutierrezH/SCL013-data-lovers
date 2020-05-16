@@ -3,18 +3,13 @@ import { filterByHouse, filterByWand, filterByCore, filterByPatronus, showPatron
 
 /////////////////* HELPERS (FUNC. PARA COSAS PEQUEÑAS REPETITIVAS) *//////////////////
 
-//1.a. Borrar contenido de div#root (página de inicio)
-function clearContent() {
-  while (root.firstChild) {
-    root.removeChild(root.firstChild);
-  }
-}
-
-//1.b. Variable global que se utiliza muchas veces en todo el código para indicar la sección que se va actualizando con la data filtrada
+//1.b. Variables de la estructura básica que se utilizan en todas las pantallas
+let clearInnerContentSection; //función
+let clearSelectBox; //función
+let sectionTitle; 
+let welcomeParagraph;
+let selectBox; //only for Gryffindor and Slytherin
 let innerContentSection;
-
-//1.c. Variable donde posteriormente se guarda la función para borrar el contenido de .inner-content
-let clearInnerContentSection;
 
 //2. Función para generar estructura básica que se repite en todas las páginas (header, título entre líneas, section.inner-content para ingresar el contenido dinámico)
 function createBasicStructure() {
@@ -29,13 +24,20 @@ function createBasicStructure() {
   </section>
     <section id="general-section" class="dynamic-content">
       <h1 class="section-title"></h1>
+      <p class="welcome-paragraph"></p>
+        <section id="select-box">
+        </section>
         <section class="inner-content">
         </section>
     </section>
 
   `;
 
+  
   innerContentSection = document.querySelector(".inner-content");
+  welcomeParagraph = document.querySelector(".welcome-paragraph");
+  selectBox = document.querySelector("#select-box");
+  sectionTitle = document.querySelector(".section-title");
 
   //función que nos devuelve a la pantalla de los escudos al hacer click en el logo
   const logoBox = document.querySelector(".small-logo-box");
@@ -50,6 +52,12 @@ function createBasicStructure() {
       innerContentSection.removeChild(innerContentSection.firstChild);
     }
   };
+  //función que permite borrar el contenido dinámico que se coloca en .select-box
+  clearSelectBox = function () {
+    while (selectBox.firstChild) {
+      selectBox.removeChild(selectBox.firstChild);
+    }
+  }
 }
 
 /////////////////////////////* PANTALLA DE INICIO *///////////////////////////////////
@@ -65,7 +73,11 @@ root.innerHTML = `
 
 const alohomoraBtn = document.querySelector(".alohomora-button");
 alohomoraBtn.addEventListener("click", () => {
-  clearContent(); //1. limpia pantalla de inicio que está en div#root
+  (function clearContent() {
+    while (root.firstChild) {
+      root.removeChild(root.firstChild);
+    }
+  })(); //1. limpia pantalla de inicio que está en div#root, se llama de inmediato solo una vez (no tiene más usos)
   return houses();
 });
 
@@ -133,6 +145,7 @@ function mainMenu() {
     let hufflepuffMembers = filterByHouse(charactersData, "Hufflepuff");
     event.preventDefault();
     window.scrollTo(0, 0);
+    clearSelectBox();
     return showHouseMembers(hufflepuffMembers);
   });
 
@@ -141,6 +154,7 @@ function mainMenu() {
     let ravenclawMembers = filterByHouse(charactersData, "Ravenclaw");
     event.preventDefault();
     window.scrollTo(0, 0);
+    clearSelectBox();
     return showHouseMembers(ravenclawMembers);
   });
 
@@ -149,6 +163,7 @@ function mainMenu() {
   wand.addEventListener("click", (event) => {
     event.preventDefault();
     window.scrollTo(0, 0);
+    clearSelectBox();
     showWood();
   });
   //Lleva a Varitas-Núcleo
@@ -156,12 +171,14 @@ function mainMenu() {
   core.addEventListener("click", (event) => {
     event.preventDefault();
     window.scrollTo(0, 0);
+    clearSelectBox();
     showCore();
   });
   //Lleva a Patronus
   const patronus = document.querySelector("#check5");
   patronus.addEventListener("click", () => {
     window.scrollTo(0, 0);
+    clearSelectBox();
     showPatronus();
   });
   //Lleva a Noticias
@@ -169,6 +186,7 @@ function mainMenu() {
   noticias.addEventListener("click", () => {
     event.preventDefault();
     window.scrollTo(0, 0);
+    clearSelectBox();
     noticiasHarry();
   });
   //Lleva a Comunicados
@@ -176,6 +194,7 @@ function mainMenu() {
   comunicados.addEventListener("click", () => {
     event.preventDefault();
     window.scrollTo(0, 0);
+    clearSelectBox();
     comunicadosHarry();
   });
 }
@@ -206,24 +225,17 @@ const welcomeMessages = [
 
 const [hogwartsWelcome, gryffindorWelcome, hufflepuffWelcome, slytherinWelcome, ravenclawWelcome, woodsWelcome, coresWelcome, patronusWelcome, newsWelcome, extraNewsWelcome] = welcomeMessages;
 
+
 /////////////////////////////////* PANTALLAS */////////////////////////////////////////
 
 //0. PANTALLA DE ESCUDOS
 function houses() {
   createBasicStructure(); //se crea una sola vez la estructura básica (se mantiene)
   mainMenu(); //se crea una sola vez la estructura del menú (se mantiene)
-
-  const sectionTitle = document.querySelector(".section-title");
   sectionTitle.classList += " titulo-dorado";
   sectionTitle.textContent = "CASAS";
   //Bienvenida de Hogwarts
-  innerContentSection.innerHTML = `
-      <p class="parrafo"></p>
-  
-  `;
-  const welcomeParagraph = document.querySelector(".parrafo");
   welcomeParagraph.textContent = hogwartsWelcome;
-  innerContentSection.appendChild(welcomeParagraph);
   innerContentSection.innerHTML += `
 
   <div class="grilla">
@@ -266,45 +278,9 @@ function houses() {
   });
 }
 
-
-//1. PANTALLA DE CADA CASA
-function showHouseMembers(houseMembers) {
-  clearInnerContentSection(); //se borra el contenido anterior
-  sortByName(houseMembers); //se ordenan los personajes de A > Z
-  const sectionTitle = document.querySelector(".section-title");
-  
-  //Bienvenida a cada Casa
-   innerContentSection.innerHTML = `
-      <p class="parrafo"></p>
-  
-  `;
-  const welcomeParagraph = document.querySelector(".parrafo");
-
-  //Modificación del color del título y de la presentación según casa (obtenida del primer objeto de cada grupo en houseMembers)
-  const firstHouseMember = houseMembers[0];
-  if (firstHouseMember.house === "Gryffindor") {
-    sectionTitle.classList = "section-title gryffindor-color";
-    sectionTitle.textContent = "GRYFFINDOR";
-    welcomeParagraph.textContent = gryffindorWelcome;
-  } else if (firstHouseMember.house === "Hufflepuff") {
-    sectionTitle.classList = "section-title hufflepuff-color";
-    sectionTitle.textContent = "HUFFLEPUFF";
-    welcomeParagraph.textContent = hufflepuffWelcome;
-  } else if (firstHouseMember.house === "Slytherin") {
-    sectionTitle.classList = "section-title slytherin-color";
-    sectionTitle.textContent = "SLYTHERIN";
-    welcomeParagraph.textContent = slytherinWelcome;
-  } else {
-    sectionTitle.classList = "section-title ravenclaw-color";
-    sectionTitle.textContent = "RAVENCLAW";
-    welcomeParagraph.textContent = ravenclawWelcome;
-  }
-   
-  
-  houseMembers.forEach((character) => {
-    let patronusName = showPatronusNameOnly(character);
-    let wandInfo = whoHasWandInfo(character);
-    innerContentSection.insertAdjacentHTML('beforeend', `
+//Función para crear tarjetas de personajes (se crea por separado para reutilizarla con opciones de orden)
+function createCharacterCards(character, patronusName, wandInfo) {
+  innerContentSection.insertAdjacentHTML('beforeend', `
         <div class="card-box">
         <div class="card">
           <div class="card-front">
@@ -323,24 +299,80 @@ function showHouseMembers(houseMembers) {
         </div>
       </div>
     `);
-  });
 }
+
+//1. PANTALLA DE CADA CASA
+function showHouseMembers(houseMembers) {
+  clearInnerContentSection(); //se borra el contenido anterior
+  const firstHouseMember = houseMembers[0]; 
+  //Bienvenida a cada Casa
+  //Modificación del color del título y de la presentación según casa (obtenida del primer objeto de cada grupo en houseMembers)
+  
+  if (firstHouseMember.house === "Gryffindor") {
+    sectionTitle.classList = "section-title gryffindor-color";
+    sectionTitle.textContent = "GRYFFINDOR";
+    welcomeParagraph.textContent = gryffindorWelcome;
+    //se crea select de orden porque hay más personajes para ordenar
+    selectBox.innerHTML = `
+    <select id="sorting-options">
+      <option value="A-Z">Ordenar de A-Z</option>
+      <option value="Z-A">Ordenar de Z-A</option>
+    </select> 
+  `;
+  } else if (firstHouseMember.house === "Hufflepuff") {
+    sectionTitle.classList = "section-title hufflepuff-color";
+    sectionTitle.textContent = "HUFFLEPUFF";
+    welcomeParagraph.textContent = hufflepuffWelcome;
+  } else if (firstHouseMember.house === "Slytherin") {
+    sectionTitle.classList = "section-title slytherin-color";
+    sectionTitle.textContent = "SLYTHERIN";
+    welcomeParagraph.textContent = slytherinWelcome;
+    //se crea select de orden porque hay más personajes para ordenar
+    selectBox.innerHTML = `
+    <select id="sorting-options">
+      <option value="A-Z">Ordenar de A-Z</option>
+      <option value="Z-A">Ordenar de Z-A</option>
+    </select> 
+  `;
+  } else {
+    sectionTitle.classList = "section-title ravenclaw-color";
+    sectionTitle.textContent = "RAVENCLAW";
+    welcomeParagraph.textContent = ravenclawWelcome;
+  }
+   
+  houseMembers.forEach(character => {
+    let patronusName = showPatronusNameOnly(character);
+    let wandInfo = whoHasWandInfo(character);
+    createCharacterCards(character, patronusName, wandInfo);
+  });
+
+  //solo asigna función a un select de orden creado (para evitar errores)
+  const sortingBtn = document.querySelector("#sorting-options");
+  if (sortingBtn != null) {
+    sortingBtn.addEventListener("change", (event) => {
+      let sortingOrder = event.target.value;
+      sortByName(houseMembers, sortingOrder);
+      clearInnerContentSection();
+      houseMembers.forEach(character => {
+        let patronusName = showPatronusNameOnly(character);
+        let wandInfo = whoHasWandInfo(character);
+        createCharacterCards(character, patronusName, wandInfo);
+      });
+    })
+  }
+  
+  
+}
+
 
 //2. PANTALLA DE VARITAS > MATERIAL
 function showWood() {
   clearInnerContentSection(); //se borra el contenido anterior
-  const sectionTitle = document.querySelector(".section-title");
   sectionTitle.classList = "section-title titulo-dorado";
   sectionTitle.textContent = "MADERA";
 
   //Bienvenida Pantalla Madera
-  innerContentSection.innerHTML = `
-      <p class="parrafo"></p>
-  
-  `;
-  const welcomeParagraph = document.querySelector(".parrafo");
   welcomeParagraph.textContent = woodsWelcome;
-  innerContentSection.appendChild(welcomeParagraph);
 
   const wandData = filterByWand(charactersData);
   wandData.forEach(wand => {
@@ -369,19 +401,11 @@ function showWood() {
 //3. PANTALLA DE VARITAS > NÚCLEO
 function showCore() {
   clearInnerContentSection(); //se borra el contenido anterior
-  const sectionTitle = document.querySelector(".section-title");
   sectionTitle.classList = "section-title titulo-dorado";
   sectionTitle.textContent = "NÚCLEO";
 
   ///Bienvenida Pantalla Núcleo
-  innerContentSection.innerHTML = `
-      <p class="parrafo"></p>
-  
-  `;
-  const welcomeParagraph = document.querySelector(".parrafo");
   welcomeParagraph.textContent = coresWelcome;
-  innerContentSection.appendChild(welcomeParagraph);
-
   const coreData = filterByCore(charactersData);
   coreData.forEach(core => {
     const [coreOwner, coreName, coreDescription, coreImg] = core;
@@ -410,19 +434,11 @@ function showCore() {
 //4. PANTALLA DE PATRONUS
 function showPatronus() {
   clearInnerContentSection(); //se borra el contenido anterior
-  const sectionTitle = document.querySelector(".section-title");
   sectionTitle.classList = "section-title titulo-dorado";
   sectionTitle.textContent = "PATRONUS";
   
   ///Bienvenida Pantalla Patronus
-  innerContentSection.innerHTML = `
-      <p class="parrafo"></p>
-  
-  `;
-  const welcomeParagraph = document.querySelector(".parrafo");
   welcomeParagraph.textContent = patronusWelcome;
-  innerContentSection.appendChild(welcomeParagraph);
-
   const patronusData = filterByPatronus(charactersData);
   patronusData.forEach(patronus => {
     const [patronusOwner, patronusName, patronusDescription, patronusImg] = patronus;
@@ -451,17 +467,10 @@ function showPatronus() {
 //5. PANTALLA DE NOTICIAS
 function noticiasHarry() {
   clearInnerContentSection(); //borra el contenido anterior
-  const sectionTitle = document.querySelector(".section-title");
   sectionTitle.classList += " titulo-dorado";
   sectionTitle.textContent = "NOTICIAS";
   ///Bienvenida Pantalla Noticias
-  innerContentSection.innerHTML = `
-      <p class="parrafo"></p>
-  
-  `;
-  const welcomeParagraph = document.querySelector(".parrafo");
   welcomeParagraph.textContent = newsWelcome;
-  innerContentSection.appendChild(welcomeParagraph);
   innerContentSection.innerHTML += `
 
   
@@ -477,18 +486,11 @@ function noticiasHarry() {
 //6. PANTALLA DE COMUNICADOS
 function comunicadosHarry() {
   clearInnerContentSection(); //se borra el contenido anterior que está en .inner-content
-  const sectionTitle = document.querySelector(".section-title");
   sectionTitle.classList += " titulo-dorado";
   sectionTitle.textContent = "COMUNICADOS";
 
   ///Bienvenida Pantalla Noticias
-  innerContentSection.innerHTML = `
-      <p class="parrafo"></p>
-  
-  `;
-  const welcomeParagraph = document.querySelector(".parrafo");
   welcomeParagraph.textContent = extraNewsWelcome;
-  innerContentSection.appendChild(welcomeParagraph);
   innerContentSection.innerHTML += `
   
 <div class="grill">

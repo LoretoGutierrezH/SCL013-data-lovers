@@ -136,7 +136,7 @@ header {
 }
 
 /*Bienvenida a cada casa*/
-.parrafo {
+.welcome-paragraph {
   font-family: "Oswald", sans-serif;
   color: #272828;
   font-size: x-large;
@@ -276,6 +276,20 @@ header {
   font-size: x-large;
   margin-top: -3rem;
 }
+
+#select-box {
+  display: flex;
+  justify-content: center;
+}
+
+#sorting-options {
+  margin: 3rem 0;
+  border-radius: 5px;
+  outline: none;
+  background-color: #e7d4c1;
+  border: 1.5px solid rgb(241, 186, 83);
+}
+
 
 /*Código Menú nuevo*/
 /*Menu Hamburguesa*/
@@ -487,7 +501,7 @@ nav ul {
     font-size: 3rem;
   }
 
-  .parrafo {
+  .welcome-paragraph {
     font-size: 2rem;
   }
 
@@ -585,7 +599,7 @@ nav ul {
     margin-top: 2rem;
   }
 
-  .parrafo {
+  .welcome-paragraph {
     font-size: 1.5rem;
   }
 

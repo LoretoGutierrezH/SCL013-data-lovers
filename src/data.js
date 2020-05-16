@@ -11,7 +11,7 @@ export function filterByHouse(dataToFilter, condition) {
 //Filtrar según la madera de la varita (wand es el objeto)
 export function filterByWand(dataToFilter) {
   const hasWand = dataToFilter.filter(character => character.wand);
-  const wandAndInfo = hasWand.map((character) => {
+  const wandAndInfo = hasWand.map(character => {
     const wood = Object.entries(character.wand)[0][1];
     const owner = character.name;
     const image = Object.entries(character.wand)[2][1];
@@ -50,16 +50,6 @@ export function filterByCore(dataToFilter) {
   return willHaveCard;
 }
 
-
-
-
-
-
-
-
-
-
-
 //Por si el personaje 1) no tiene varita, 2) solo tiene madera 3) tiene madera y núcleo
 export function whoHasWandInfo(character) {
   let wandWood = Object.entries(character.wand)[0][1];
@@ -75,9 +65,6 @@ export function whoHasWandInfo(character) {
   }
 
 }
-
-
-
 
 
 //Filtrar por el patronus. El resultado es un array con muchos array [nombre, patronus, descripción] - onlyPatronus(character); (después de un forEach)
@@ -105,17 +92,29 @@ export function filterByPatronus(dataToFilter) {
   return patronusAndInfo;
 }
 
-//Ordenar personajes por su nombre de A > Z
-export function sortByName(sortingData) {
-  sortingData.sort((a, b) => {
-    if (a.name > b.name) {
-      return 1;
-    } else if (a.name < b.name) {
-      return -1;
-    } else {
-      return 0;
-    }
-  })
-  return sortingData;
+//Ordenar personajes por su nombre de manera ascendente y descendente
+export function sortByName(sortingData, sortingOrder) {
+
+  if (sortingOrder === "A-Z") {
+    sortingData.sort((a, b) => {
+      if (a.name > b.name) { 
+        return 1;
+      } else if (a.name < b.name) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
+  } else {
+    sortingData.sort((a, b) => {
+      if (a.name > b.name) {
+        return -1;
+      } else if (a.name < b.name) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+  }
 }
 
