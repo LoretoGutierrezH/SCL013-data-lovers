@@ -79,8 +79,8 @@ export function showPatronusNameOnly(dataToFilter) {
 
 //Filtrar por el patronus (pero sin forEach previo) - filterByPatronus(charactersData);
 export function filterByPatronus(dataToFilter) {
-  const hasPatronus = dataToFilter.filter((character) => character.patronus);
-  const patronusAndInfo = hasPatronus.map((character) => {
+  const hasPatronus = dataToFilter.filter(character => character.patronus);
+  const patronusAndInfo = hasPatronus.map(character => {
     const patronus = Object.entries(character.patronus)[0][1];
     const owner = character.name;
     const image = Object.entries(character.patronus)[2][1];
