@@ -157,7 +157,14 @@ describe("Sort by name function", () => {
     ];
 
     
-    expect(sortByName(sortingData)).toEqual([
+    expect(sortByName(sortingData, "A-Z")).toEqual([
+        {name: "Arthur Weasley"},
+        {name: "Ginny Weasley"},
+        {name: "Harry Potter"},
+        {name: "Severus Snape"}
+    ]);
+
+     expect(sortByName(sortingData, "Z-A")).toEqual([
         {name: "Arthur Weasley"},
         {name: "Ginny Weasley"},
         {name: "Harry Potter"},

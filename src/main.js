@@ -1,4 +1,21 @@
 import charactersData from "./data/potter/potter.js";
+
+/* let charactersData;
+const getJSON = async function() {
+    try {
+      let response = await fetch("https://github.com/LoretoGutierrezH/SCL013-data-lovers/blob/master/src/data/potter/potter.json");
+      let data = await response.json();
+      charactersData = data;
+    } catch (error) {
+      console.log("No se pudo obtener la data mediante Fetch()");
+    }
+    
+}
+
+getJSON(); */
+
+
+
 import { filterByHouse, filterByWand, filterByCore, filterByPatronus, showPatronusNameOnly, sortByName, whoHasWandInfo} from "./data.js";
 import { welcomeMessages } from "./welcomeMessages.js";
 
@@ -255,28 +272,7 @@ function houses() {
   });
 }
 
-//Función para crear tarjetas de personajes (se crea por separado para reutilizarla con opciones de orden)
-function createCharacterCards(character, patronusName, wandInfo) {
-  innerContentSection.insertAdjacentHTML('beforeend', `
-        <div class="card-box">
-        <div class="card">
-          <div class="card-front">
-            <p class="transparent-card-title">${character.name}</p><img
-              src="${character.image}">
-          </div>
-          <div class="card-back">
-            <ul class="card-info">
-              <h1 class="card-title">${character.name}</h1>
-              <li>Género: ${character.gender}</li>
-              <li>Año de nacimiento: ${character.yearOfBirth}</li>
-              <li>Patronus: ${patronusName}</li>
-              <li> Varita: ${wandInfo}</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    `);
-}
+
 
 //1. PANTALLA DE CADA CASA
 function showHouseMembers(houseMembers) {
@@ -341,6 +337,28 @@ function showHouseMembers(houseMembers) {
   
 }
 
+//Función para crear tarjetas de personajes (se crea por separado para reutilizarla con opciones de orden)
+function createCharacterCards(character, patronusName, wandInfo) {
+  innerContentSection.insertAdjacentHTML('beforeend', `
+        <div class="card-box">
+        <div class="card">
+          <div class="card-front">
+            <p class="transparent-card-title">${character.name}</p><img
+              src="${character.image}">
+          </div>
+          <div class="card-back">
+            <ul class="card-info">
+              <h1 class="card-title">${character.name}</h1>
+              <li>Género: ${character.gender}</li>
+              <li>Año de nacimiento: ${character.yearOfBirth}</li>
+              <li>Patronus: ${patronusName}</li>
+              <li> Varita: ${wandInfo}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    `);
+}
 
 //2. PANTALLA DE VARITAS > MATERIAL
 function showWood() {
