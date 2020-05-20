@@ -1,20 +1,14 @@
 import charactersData from "./data/potter/potter.js";
 
-/* let charactersData;
-const getJSON = async function() {
-    try {
-      let response = await fetch("https://github.com/LoretoGutierrezH/SCL013-data-lovers/blob/master/src/data/potter/potter.json");
-      let data = await response.json();
-      charactersData = data;
-    } catch (error) {
-      console.log("No se pudo obtener la data mediante Fetch()");
-    }
-    
+//Using Fetch API (can't use actual data because we modified potter.js :P)
+/* const getData = async function() {
+  let response = await fetch("./data/potter/potter.json");
+  let data = await response.json();
+  return data;
 }
 
-getJSON(); */
-
-
+let fetchedCharData;
+getData().then(data => fetchedCharData = data); */
 
 import { filterByHouse, filterByWand, filterByCore, filterByPatronus, showPatronusNameOnly, sortByName, whoHasWandInfo} from "./data.js";
 import { welcomeMessages } from "./welcomeMessages.js";
